@@ -12,12 +12,41 @@ If you have to use private repository for the assignment, then ask us for github
 ## The assignment
 _NOTE: You are expected to know how to use docker containers_
 
-Implement a `GatewayService` which handles incoming requests. Pass the `GET` requests on to a underlying service called `PokemonService`.
+### Gateway
+Implement a `GatewayService` which handles incoming requests.
 
-The `PokemonService` should respond back to the `GatewayService` and on to the `Client`. The service should hold data in a `PostgreSQL` database. How you store the data in the database is up to you.
+The gateway should handle calls to `/api/pokemons/` and to `/api/translations/`
 
-We have provided a `pokedex.json` file - you can use `https://json2csharp.com/` to create a C# class for it.
+### First service
+You should implement a service that handles requests to `/api/pokemons/`.
+- `GET` requests should fetch from DB and return data to the client.
+- `PUT`, `POST` and `DELETE` should forward a message to RabbitMQ and return `200 OK`
 
-You should handle all standard REST operations (`GET`, `PUT`, `POST`, `DELETE`) in the `GatewayService`
+Specs:
+- Should be possible to get ALL pokemon, a range of pokemon and single pokemon
+- `PUT`and `POST` should only be done for single entries
+- `DELETE` should accept a range of IDs
 
-For all operations except `GET` you should handle them in a async manner through a broker of some sort - use `RabbitMQ` as it's quite easy to get working locally in `docker`.
+### Second service
+You also need to implemenet a service that handles requests to `/api/translations`
+
+This will only handle `GET` requests and should return:
+- Translations for a range of pokemon IDs
+- Translations for a specific pokemon
+- Translations for a range of pokemon IDs with Locale (en-gb, etc)
+- Translations for a specific pokemon with Locale (en-gb, etc)
+
+### Third service
+Lastly you need to implement the service listening for the events sent from the first service.
+- `PUT` messages should add the pokemon to the database if it does NOT exist
+- `POST` messages should update a specific pokemon in the database if it DOES exist
+- `DELETE` should just delete the specified pokemon - we don't really care if it exist or not as long as it gets deleted if it does
+
+
+Use docker containers for all your dependencies (database, message queue, etc.). You do not have to prepare the services for container usage.
+
+## Important notice
+Use best practices for C#/.NET and make sure you think about testability (don't write tests, but write code that can be tested if need be).
+
+## Example
+![backend-assignment drawio (2)](https://user-images.githubusercontent.com/1456819/155525766-ad827d19-6f74-4d11-89f5-bc5c17350d31.png)
