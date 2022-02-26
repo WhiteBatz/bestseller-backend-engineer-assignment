@@ -36,6 +36,8 @@ This will only handle `GET` requests and should return:
 - Translations for a range of pokemon IDs with Locale (en-gb, etc)
 - Translations for a specific pokemon with Locale (en-gb, etc)
 
+The translations are updated through `First Service`
+
 ### Third service
 Lastly you need to implement the service listening for the events sent from the first service.
 - `PUT` messages should add the pokemon to the database if it does NOT exist
@@ -44,6 +46,8 @@ Lastly you need to implement the service listening for the events sent from the 
 
 
 Use docker containers for all your dependencies (database, message queue, etc.). You do not have to prepare the services for container usage.
+
+You can use whatever database you like (we use PostgreSQL) and any messagequeue/pubsub you like (we use GCP Pub/Sub).
 
 ## Important notice
 Use best practices for C#/.NET and make sure you think about testability (don't write tests, but write code that can be tested if need be).
