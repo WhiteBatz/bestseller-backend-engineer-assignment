@@ -53,4 +53,6 @@ You can use whatever database you like (we use PostgreSQL) and any messagequeue/
 Use best practices for C#/.NET and make sure you think about testability (don't write tests, but write code that can be tested if need be).
 
 ## Example
+You do NOT need to name your services like this. This is just an **EXAMPLE**
+
 ![backend-assignment drawio (2)](https://user-images.githubusercontent.com/1456819/155525766-ad827d19-6f74-4d11-89f5-bc5c17350d31.png)
